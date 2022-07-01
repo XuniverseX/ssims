@@ -93,8 +93,8 @@
         methods: {
             select(){
                 axios({
-                    methods: "post",
-                    url:"http://localhost:8081/saloonSales/currentPage="+this.currentPage+"&pageSize="+this.pageSize,
+                    methods: "get",
+                    url:"http://localhost:8081/sales/current="+this.currentPage,
                     data:this.saloonSales
                 }).then(function (resp){
                     //设置表格数据

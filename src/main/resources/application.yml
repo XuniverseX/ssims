@@ -8,6 +8,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/ssims?useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 12345678
+  mvc:
+    static-path-pattern: /*
 mybatis-plus:
   type-aliases-package: com.common.entity
 logging:
