@@ -1,2 +1,15 @@
 server:
   port: 8081
+spring:
+  application:
+    name: SQLCourseDesign
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/ssims?useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 12345678
+mybatis-plus:
+  type-aliases-package: com.common.entity
+logging:
+  level:
+    com.common: debug
