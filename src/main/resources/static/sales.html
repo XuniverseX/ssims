@@ -20,13 +20,15 @@
     <hr color="blue">
 <!--    搜索表单-->
     <el-form :inline="true" :model="saloonSales" class="demo-form-inline">
-        <el-form-item label="轿车编号">
-            <el-input v-model="saloonSales.saloonId" placeholder="轿车编号"></el-input>
+        <el-form-item label="轿车型号">
+            <el-input v-model="saloonSales.saloonModel" placeholder="轿车型号"></el-input>
         </el-form-item>
-        <el-form-item label="员工编号">
-            <el-input v-model="saloonSales.employeeId" placeholder="员工编号"></el-input>
+        <el-form-item label="员工姓名">
+            <el-input v-model="saloonSales.employeeName" placeholder="员工姓名"></el-input>
         </el-form-item>
-
+        <el-form-item label="客户姓名">
+            <el-input v-model="saloonSales.customerName" placeholder="客户姓名"></el-input>
+        </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
@@ -43,23 +45,33 @@
                     align="center">
             </el-table-column>
             <el-table-column
+                    prop="saloonModel"
+                    label="轿车型号"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="saloonPrice"
+                    label="轿车价格"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="employeeName"
+                    label="员工姓名"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="customerName"
+                    label="客户姓名"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="customerPhone"
+                    label="客户电话"
+                    align="center">
+            </el-table-column>
+            <el-table-column
                     prop="salesDate"
                     label="销售日期"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="saloonId"
-                    label="轿车编号"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="employeeId"
-                    label="员工编号"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="customerId"
-                    label="客户编号"
                     align="center">
             </el-table-column>
         </el-table>
@@ -92,11 +104,9 @@
 
         methods: {
             select(){
-                axios({
-                    methods: "get",
-                    url:"http://localhost:8081/sales?current=" + this.currentPage + "&pageSize=" + this.pageSize,
-                    data:this.saloonSales
-                }).then(resp => {
+                axios.post("http://localhost:8081/sales?current=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    this.saloonSales
+                ).then(resp => {
                     //设置表格数据
                     this.tableData = resp.data.data.list;
                     //设置总记录数
@@ -116,7 +126,6 @@
             },
             //搜索表单
             onSubmit() {
-                // console.log('submit!');
                 this.select();
             },
             //表格
@@ -134,9 +143,11 @@
                 saloonSales: {
                     id: '',
                     salesDate: '',
-                    saloonId: '',
-                    employeeId: '',
-                    customerId: ''
+                    saloonModel: '',
+                    employeeName: '',
+                    customerName: '',
+                    customerPhone: '',
+                    saloonPrice: ''
                 },
                 //每页显示的条数
                 pageSize:5,
