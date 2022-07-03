@@ -1,21 +1,28 @@
 package com.common.controller;
 
 import com.common.dto.SalesDTO;
+import com.common.entity.SaloonSales;
 import com.common.service.ISaloonSalesService;
 import com.common.dto.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("sales")
+@RequestMapping("/sales")
 public class SaloonSalesController {
 
     @Resource
     private ISaloonSalesService saloonSalesService;
+
+    @PostMapping
+    public Result<Object> save(@RequestBody SaloonSales saloonSales) {
+        boolean success = saloonSalesService.save(saloonSales);
+        if (!success) {
+            return Result.fail("保存失败");
+        }
+        return Result.success();
+    }
 
     @GetMapping
     public Result<SalesDTO> getAll(@RequestParam(value = "current", defaultValue = "1") Integer current,
