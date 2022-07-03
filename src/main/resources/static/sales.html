@@ -94,13 +94,13 @@
             select(){
                 axios({
                     methods: "get",
-                    url:"http://localhost:8081/sales?current="+this.currentPage,
+                    url:"http://localhost:8081/sales?current=" + this.currentPage + "&pageSize=" + this.pageSize,
                     data:this.saloonSales
                 }).then(resp => {
                     //设置表格数据
-                    this.tableData = resp.data.data;
+                    this.tableData = resp.data.data.list;
                     //设置总记录数
-                    this.totalCount = resp.data.totalCount;
+                    this.totalCount = resp.data.data.totalCount;
                 })
             },
             //分页

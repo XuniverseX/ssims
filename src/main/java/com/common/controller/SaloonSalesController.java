@@ -18,8 +18,9 @@ public class SaloonSalesController {
     private ISaloonSalesService saloonSalesService;
 
     @GetMapping
-    public Result<SalesDTO> getAll(@RequestParam(value = "current", defaultValue = "1") Integer current) {
-        return saloonSalesService.getAll(current);
+    public Result<SalesDTO> getAll(@RequestParam(value = "current", defaultValue = "1") Integer current,
+                                   @RequestParam(value = "pageSize", defaultValue = "1") Integer pageSize) {
+        return saloonSalesService.getAll(current, pageSize);
     }
 
 }

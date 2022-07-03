@@ -8,5 +8,6 @@ import java.util.List;
 @Data
 public class SalesDTO {
     private List<SaloonSales> list;
-    private Long pages;
+    private long pages;
+    private long totalCount;
 }

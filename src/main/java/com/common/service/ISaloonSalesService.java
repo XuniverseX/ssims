@@ -6,5 +6,5 @@ import com.common.dto.SalesDTO;
 import com.common.entity.SaloonSales;
 
 public interface ISaloonSalesService extends IService<SaloonSales> {
-    Result<SalesDTO> getAll(Integer current);
+    Result<SalesDTO> getAll(Integer current, Integer pageSize);
 }
