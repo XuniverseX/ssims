@@ -72,7 +72,8 @@
             <el-table-column
                     prop="salesDate"
                     label="销售日期"
-                    align="center">
+                    align="center"
+                    :formatter="formatter">
             </el-table-column>
         </el-table>
     </template>
@@ -103,8 +104,12 @@
         },
 
         methods: {
+            //销售日期打印格式化
+            formatter(row,column){
+                return row.salesDate.replace('T',' ');
+            },
             select(){
-                axios.post("http://localhost:8081/sales?current=" + this.currentPage + "&pageSize=" + this.pageSize,
+                axios.post("http://localhost:8081/sales/getAll?current=" + this.currentPage + "&pageSize=" + this.pageSize,
                     this.saloonSales
                 ).then(resp => {
                     //设置表格数据
@@ -128,7 +133,7 @@
             onSubmit() {
                 this.select();
             },
-            //表格
+            //表格状态切换格式
             tableRowClassName({row, rowIndex}) {
                 if (rowIndex === 1) {
                     return 'warning-row';
@@ -155,13 +160,15 @@
                 totalCount: 100,
                 //分页
                 currentPage: 1,
-                //表格
+                //表格数据
                 tableData: [{
                     id: '',
                     salesDate: '',
-                    saloonId: '',
-                    employeeId: '',
-                    customerId: ''
+                    saloonModel: '',
+                    employeeName: '',
+                    customerName: '',
+                    saloonPrice: '',
+                    customerPhone: ''
                 }]
             }
         }
