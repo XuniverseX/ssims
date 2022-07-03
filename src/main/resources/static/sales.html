@@ -38,7 +38,7 @@
                 style="width: 100%"
                 :row-class-name="tableRowClassName">
             <el-table-column
-                    prop="salesOrderNumber"
+                    prop="id"
                     label="售货单号"
                     align="center">
             </el-table-column>
@@ -58,8 +58,8 @@
                     align="center">
             </el-table-column>
             <el-table-column
-                    prop="customerName"
-                    label="客户姓名"
+                    prop="customerId"
+                    label="客户编号"
                     align="center">
             </el-table-column>
         </el-table>
@@ -96,9 +96,9 @@
                     methods: "get",
                     url:"http://localhost:8081/sales?current="+this.currentPage,
                     data:this.saloonSales
-                }).then(function (resp){
+                }).then(resp => {
                     //设置表格数据
-                    this.tableData = resp.data.rows;
+                    this.tableData = resp.data.data;
                     //设置总记录数
                     this.totalCount = resp.data.totalCount;
                 })
@@ -132,11 +132,11 @@
         data() {
             return {
                 saloonSales: {
-                    salesOrderNumber: '',
+                    id: '',
                     salesDate: '',
                     saloonId: '',
                     employeeId: '',
-                    customerName: ''
+                    customerId: ''
                 },
                 //每页显示的条数
                 pageSize:5,
@@ -146,15 +146,14 @@
                 currentPage: 1,
                 //表格
                 tableData: [{
-                    salesOrderNumber: '',
+                    id: '',
                     salesDate: '',
                     saloonId: '',
                     employeeId: '',
-                    customerName: ''
+                    customerId: ''
                 }]
             }
         }
-
     })
 </script>
 </body>
