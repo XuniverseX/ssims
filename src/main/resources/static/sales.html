@@ -94,7 +94,7 @@
             select(){
                 axios({
                     methods: "get",
-                    url:"http://localhost:8081/sales/current="+this.currentPage,
+                    url:"http://localhost:8081/sales?current="+this.currentPage,
                     data:this.saloonSales
                 }).then(function (resp){
                     //设置表格数据
