@@ -13,7 +13,7 @@
 <div id="app">
     <el-form :model="user">
         <el-form-item label="用户名:" label-width="80px">
-            <el-input v-model.trim="user.userName" type="text"></el-input>
+            <el-input v-model.trim="user.username" type="text"></el-input>
         </el-form-item>
         <el-form-item label="密码:" label-width="80px">
             <el-input v-model.trim="user.password" type="password"></el-input>
@@ -37,7 +37,7 @@
         data() {
             return {
                 user:{
-                    userName: '',
+                    username: '',
                     password: '',
                     newPassword: ''
                 }
@@ -48,14 +48,13 @@
                 window.location.href = "login.html";
             },
             register() {
-                if (this.user.userName.length > 0) {
+                if (this.user.username.length > 0) {
                     if(this.user.password.length > 0) {
                         if (this.user.password === this.user.newPassword) {
-                            axios.get(
-                                "http://localhost:8081/register?userName=" + this.user.userName + "&password=" + this.user.password, this.user
+                            axios.post(
+                                "http://localhost:8081/user/register?username=" + this.user.username + "&password=" + this.user.password, this.user
                             ).then(resp => {
-                                if (resp.message) {
-                                    alert(resp.message);
+                                if (resp.data.code === 0) {
                                     window.location.href = "sales.html";
                                 } else {
                                     alert(resp.message);
