@@ -36,4 +36,8 @@ public class Sales implements Serializable {
      * 销售日期
      */
     private LocalDateTime salesDate;
+    /**
+     * 销售折扣
+     */
+    private Float discount;
 }

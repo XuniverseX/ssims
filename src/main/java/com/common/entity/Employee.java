@@ -39,4 +39,8 @@ public class Employee implements Serializable {
      * 员工学历
      */
     private String education;
+    /**
+     * 员工职位
+     */
+    private String job;
 }

@@ -39,6 +39,6 @@ public class Saloon implements Serializable {
     /**
      * 轿车价格
      */
-    private Integer price;
+    private Double price;
 
 }

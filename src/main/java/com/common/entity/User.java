@@ -7,6 +7,10 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author xuni
+ * @since 2022-07-04
+ */
 @Data
 @TableName("user")
 public class User implements Serializable {
@@ -18,4 +22,6 @@ public class User implements Serializable {
     private String username;
 
     private String password;
+
+    private Boolean isAuth;
 }

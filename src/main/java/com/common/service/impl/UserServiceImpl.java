@@ -1,6 +1,8 @@
 package com.common.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.common.dto.PageDTO;
 import com.common.dto.Result;
 import com.common.entity.User;
 import com.common.mapper.UserMapper;
@@ -29,5 +31,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         newUser.setPassword(password);
         save(newUser);
         return Result.success(newUser);
+    }
+
+    @Override
+    public Result<PageDTO<User>> getAll(Integer current, Integer pageSize) {
+        Page<User> page = query().page(new Page<>(current, pageSize));
+        PageDTO<User> pageDTO = new PageDTO<>();
+        pageDTO.setList(page.getRecords());
+        pageDTO.setPages(page.getPages());
+        pageDTO.setTotalCount(page.getTotal());
+        return Result.success(pageDTO);
     }
 }
