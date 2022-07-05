@@ -109,7 +109,7 @@
                 return row.salesDate.replace('T',' ');
             },
             select(){
-                axios.post("http://localhost:8081/sales/getAll?current=" + this.currentPage + "&pageSize=" + this.pageSize,
+                axios.post("http://localhost:8081/sales/data?current=" + this.currentPage + "&pageSize=" + this.pageSize,
                     this.sales
                 ).then(resp => {
                     //设置表格数据

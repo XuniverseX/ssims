@@ -6,25 +6,36 @@
     <style>
         #app{
             width: 400px;
+            height: 100%;
+        }
+        .box{
+            width: 400px;
+            height: 400px;
+            border: 1px;
+            display: flex;
+            margin: auto;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
-<div id="app">
-    <el-form :model="user">
-        <el-form-item label="用户名:" label-width="80px">
-            <el-input v-model.trim="user.username" type="text"></el-input>
-        </el-form-item>
-        <el-form-item label="密码:" label-width="80px">
-            <el-input v-model.trim="user.password" type="password"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码:" label-width="80px">
-            <el-input v-model.trim="user.newPassword" type="password"></el-input>
-        </el-form-item>
-        <el-form-item align="center">
-            <el-button type="primary" @click="register">注册</el-button>
-            <el-button @click="login">登录</el-button>
-        </el-form-item>
+<p align="center">注册</p>
+<div id="app" class="box" >
+        <el-form :model="user">
+            <el-form-item label="用户名:" label-width="80px">
+                <el-input v-model.trim="user.username" type="text"></el-input>
+            </el-form-item>
+            <el-form-item label="密码:" label-width="80px">
+                <el-input v-model.trim="user.password" type="password"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码:" label-width="80px">
+                <el-input v-model.trim="user.newPassword" type="password"></el-input>
+            </el-form-item>
+            <el-form-item align="center">
+                <el-button type="primary" @click="register">注册</el-button>
+                <el-button @click="login">登录</el-button>
+            </el-form-item>
     </el-form>
 </div>
 <script src="js/vue.js"></script>
@@ -55,27 +66,39 @@
                                 "http://localhost:8081/user/register?username=" + this.user.username + "&password=" + this.user.password, this.user
                             ).then(resp => {
                                 if (resp.data.code === 0) {
-                                    window.location.href = "sales.html";
+                                    this.$message({
+                                        message: '注册成功',
+                                        type: 'success',
+                                        duration: 500
+                                    });
+                                    window.location.href = "login.html";
                                 } else {
-                                    alert(resp.message);
+                                    this.$message({
+                                        message: resp.data.message,
+                                        type: 'warning',
+                                        duration: 500
+                                    });
                                 }
                             })
                         } else {
                             this.$message({
                                 message: '两次密码不一致',
-                                type: 'warning'
+                                type: 'warning',
+                                duration: 500
                             });
                         }
                     }else {
                         this.$message({
                             message: '密码不能为空',
-                            type: 'warning'
+                            type: 'warning',
+                            duration: 500
                         });
                     }
                 }else {
                     this.$message({
                         message: '用户名不能为空',
-                        type: 'warning'
+                        type: 'warning',
+                        duration: 500
                     });
                 }
             }
