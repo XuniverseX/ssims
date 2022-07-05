@@ -12,5 +12,5 @@ public class SalesDTO {
     private String employeeName;
     private String customerName;
     private String customerPhone;
-    private Integer saloonPrice;
+    private Double saloonPrice;
 }
