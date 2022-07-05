@@ -23,15 +23,15 @@ public class Sales implements Serializable {
     /**
      * 轿车id
      */
-    private Long saloonId;
+    private Long sno;
     /**
      * 员工id
      */
-    private Long employeeId;
+    private Long eno;
     /**
      * 客户id
      */
-    private Long customerId;
+    private Long cno;
     /**
      * 销售日期
      */

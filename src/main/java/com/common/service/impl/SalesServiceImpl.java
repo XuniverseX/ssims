@@ -42,9 +42,9 @@ public class SalesServiceImpl extends ServiceImpl<SalesMapper, Sales> implements
 
         page.getRecords().forEach(sales -> {
             SalesDTO temp = new SalesDTO();
-            Saloon saloon = saloonService.query().eq("sno", sales.getSaloonId()).one();
-            Employee employee = employeeService.query().eq("eno", sales.getEmployeeId()).one();
-            Customer customer = customerService.query().eq("cno", sales.getCustomerId()).one();
+            Saloon saloon = saloonService.query().eq("sno", sales.getSno()).one();
+            Employee employee = employeeService.query().eq("eno", sales.getEno()).one();
+            Customer customer = customerService.query().eq("cno", sales.getCno()).one();
 
 
             if (!preSelectDTO.getSaloonModel().isEmpty())
