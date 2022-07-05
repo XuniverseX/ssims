@@ -4,16 +4,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.common.dto.PreSelectDTO;
 import com.common.dto.Result;
+import com.common.dto.PageDTO;
 import com.common.dto.SalesDTO;
-import com.common.dto.SaloonSalesDTO;
 import com.common.entity.Customer;
 import com.common.entity.Employee;
+import com.common.entity.Sales;
 import com.common.entity.Saloon;
-import com.common.entity.SaloonSales;
-import com.common.mapper.SaloonSalesMapper;
+import com.common.mapper.SalesMapper;
 import com.common.service.ICustomerService;
 import com.common.service.IEmployeeService;
-import com.common.service.ISaloonSalesService;
+import com.common.service.ISalesService;
 import com.common.service.ISaloonService;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SaloonSalesServiceImpl extends ServiceImpl<SaloonSalesMapper, SaloonSales> implements ISaloonSalesService {
+public class SalesServiceImpl extends ServiceImpl<SalesMapper, Sales> implements ISalesService {
 
     @Resource
     private ISaloonService saloonService;
@@ -34,17 +34,17 @@ public class SaloonSalesServiceImpl extends ServiceImpl<SaloonSalesMapper, Saloo
     private IEmployeeService employeeService;
 
     @Override
-    public Result<SalesDTO> getAll(Integer current, Integer pageSize, PreSelectDTO preSelectDTO) {
-        Page<SaloonSales> page = query()
+    public Result<PageDTO<SalesDTO>> getAll(Integer current, Integer pageSize, PreSelectDTO preSelectDTO) {
+        Page<Sales> page = query()
                 .page(new Page<>(current, pageSize));
 
-        List<SaloonSalesDTO> result = new ArrayList<>();
+        List<SalesDTO> result = new ArrayList<>();
 
-        page.getRecords().forEach(saloonSales -> {
-            SaloonSalesDTO temp = new SaloonSalesDTO();
-            Saloon saloon = saloonService.query().eq("id", saloonSales.getSaloonId()).one();
-            Employee employee = employeeService.query().eq("id", saloonSales.getEmployeeId()).one();
-            Customer customer = customerService.query().eq("id", saloonSales.getCustomerId()).one();
+        page.getRecords().forEach(sales -> {
+            SalesDTO temp = new SalesDTO();
+            Saloon saloon = saloonService.query().eq("sno", sales.getSaloonId()).one();
+            Employee employee = employeeService.query().eq("eno", sales.getEmployeeId()).one();
+            Customer customer = customerService.query().eq("cno", sales.getCustomerId()).one();
 
 
             if (!preSelectDTO.getSaloonModel().isEmpty())
@@ -59,8 +59,8 @@ public class SaloonSalesServiceImpl extends ServiceImpl<SaloonSalesMapper, Saloo
                 if (!employee.getName().equals(preSelectDTO.getEmployeeName()))
                     return;
 
-            temp.setId(saloonSales.getId());
-            temp.setSalesDate(saloonSales.getSalesDate());
+            temp.setId(sales.getId());
+            temp.setSalesDate(sales.getSalesDate());
             temp.setSaloonModel(saloon.getModel());
             temp.setCustomerName(customer.getName());
             temp.setEmployeeName(employee.getName());
@@ -70,10 +70,10 @@ public class SaloonSalesServiceImpl extends ServiceImpl<SaloonSalesMapper, Saloo
             result.add(temp);
         });
 
-        SalesDTO salesDTO = new SalesDTO();
-        salesDTO.setList(result);
-        salesDTO.setPages(page.getPages());
-        salesDTO.setTotalCount(page.getTotal());
-        return Result.success(salesDTO);
+        PageDTO<SalesDTO> pageDTO = new PageDTO<>();
+        pageDTO.setList(result);
+        pageDTO.setPages(page.getPages());
+        pageDTO.setTotalCount(page.getTotal());
+        return Result.success(pageDTO);
     }
 }

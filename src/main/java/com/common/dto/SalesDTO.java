@@ -2,11 +2,15 @@ package com.common.dto;
 
 import lombok.Data;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 public class SalesDTO {
-    private List<SaloonSalesDTO> list;
-    private long pages;
-    private long totalCount;
+    private Long id;
+    private LocalDateTime salesDate;
+    private String saloonModel;
+    private String employeeName;
+    private String customerName;
+    private String customerPhone;
+    private Integer saloonPrice;
 }

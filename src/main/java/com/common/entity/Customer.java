@@ -17,7 +17,7 @@ public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "cno", type = IdType.AUTO)
     private Long id;
     /**
      * 客户姓名

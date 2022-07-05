@@ -19,15 +19,15 @@
     <h1 align="center" >轿车销售管理系统</h1>
     <hr color="blue">
 <!--    搜索表单-->
-    <el-form :inline="true" :model="saloonSales" class="demo-form-inline">
+    <el-form :inline="true" :model="sales" class="demo-form-inline">
         <el-form-item label="轿车型号">
-            <el-input v-model="saloonSales.saloonModel" placeholder="轿车型号"></el-input>
+            <el-input v-model="sales.saloonModel" placeholder="轿车型号"></el-input>
         </el-form-item>
         <el-form-item label="员工姓名">
-            <el-input v-model="saloonSales.employeeName" placeholder="员工姓名"></el-input>
+            <el-input v-model="sales.employeeName" placeholder="员工姓名"></el-input>
         </el-form-item>
         <el-form-item label="客户姓名">
-            <el-input v-model="saloonSales.customerName" placeholder="客户姓名"></el-input>
+            <el-input v-model="sales.customerName" placeholder="客户姓名"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -110,7 +110,7 @@
             },
             select(){
                 axios.post("http://localhost:8081/sales/getAll?current=" + this.currentPage + "&pageSize=" + this.pageSize,
-                    this.saloonSales
+                    this.sales
                 ).then(resp => {
                     //设置表格数据
                     this.tableData = resp.data.data.list;
@@ -145,7 +145,7 @@
         },
         data() {
             return {
-                saloonSales: {
+                sales: {
                     id: '',
                     salesDate: '',
                     saloonModel: '',
