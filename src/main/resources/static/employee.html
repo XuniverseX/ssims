@@ -233,7 +233,7 @@
                 })
             },
             addEmployee(formName){
-                if (this.identity === true){
+                if (this.identity === 'true'){
                     axios.post("http://localhost:8081/employee",this.employee
                     ).then(resp =>{
                         if(resp.data.code === 0){
@@ -259,7 +259,7 @@
                 }
             },
             update(){
-                if (this.identity === true){
+                if (this.identity === 'true'){
                     this.$confirm('确定要修改这条数据吗','提示',{
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -298,7 +298,7 @@
                     })
             },
             deleteById(){
-                if (this.identity === true){
+                if (this.identity === 'true'){
                     this.$confirm('此操作将永久删除数据','提示',{
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',

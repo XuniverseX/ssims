@@ -21,7 +21,13 @@ public class SalesController {
     public Result<PageDTO<SalesDTO>> getDisplayData(@RequestParam(value = "current", defaultValue = "1") Integer current,
                                                     @RequestParam(value = "pageSize", defaultValue = "1") Integer pageSize,
                                                     @RequestBody PreSelectDTO preSelectDTO) {
-        return salesService.getAll(current, pageSize, preSelectDTO);
+        return salesService.getDisplayData(current, pageSize, preSelectDTO);
+    }
+
+    @GetMapping
+    public Result<PageDTO<Sales>> getAll(@RequestParam(value = "current", defaultValue = "1") Integer current,
+                                         @RequestParam(value = "pageSize", defaultValue = "1") Integer pageSize) {
+        return salesService.getAll(current, pageSize);
     }
 
     @GetMapping("/{id}")

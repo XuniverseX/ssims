@@ -40,4 +40,8 @@ public class Sales implements Serializable {
      * 销售折扣
      */
     private Float discount;
+    /**
+     * 售后热线
+     */
+    private String serviceHotline;
 }

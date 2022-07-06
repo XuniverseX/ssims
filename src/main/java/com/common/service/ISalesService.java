@@ -8,5 +8,7 @@ import com.common.dto.SalesDTO;
 import com.common.entity.Sales;
 
 public interface ISalesService extends IService<Sales> {
-    Result<PageDTO<SalesDTO>> getAll(Integer current, Integer pageSize, PreSelectDTO preSelectDTO);
+    Result<PageDTO<SalesDTO>> getDisplayData(Integer current, Integer pageSize, PreSelectDTO preSelectDTO);
+
+    Result<PageDTO<Sales>> getAll(Integer current, Integer pageSize);
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>customer</title>
+    <title>saloon</title>
     <style>
         .el-table .warning-row {
             background: oldlace;
@@ -15,7 +15,7 @@
 </head>
 <body>
 <div id="app">
-    <h1 align="center" >客户信息</h1>
+    <h1 align="center">销售信息</h1>
     <hr color="blue">
     <el-row>
 
@@ -24,62 +24,66 @@
     </el-row>
     <!--添加数据对话框表单-->
     <el-dialog
-            title="添加客户信息"
+            title="添加销售信息"
             :visible.sync="dialogVisible"
             width="30%"
     >
 
-        <el-form ref="add" :model="customer" label-width="80px">
-            <el-form-item label="客户姓名" prop="name">
-                <el-input v-model="customer.name"></el-input>
+        <el-form ref="add" :model="saloonSales" label-width="80px">
+            <el-form-item label="轿车编号" prop="sno">
+                <el-input v-model="saloonSales.sno"></el-input>
             </el-form-item>
 
-            <el-form-item label="客户电话" prop="phone">
-                <el-input v-model="customer.phone"></el-input>
+            <el-form-item label="客户编号" prop="cno">
+                <el-input v-model="saloonSales.cno"></el-input>
             </el-form-item>
 
-            <el-form-item label="地址" prop="address">
-                <el-input v-model="customer.address"></el-input>
+            <el-form-item label="员工编号" prop="eno">
+                <el-input v-model="saloonSales.eno"></el-input>
             </el-form-item>
 
-            <el-form-item label="联系记录" prop="record">
-                <el-input v-model="customer.record"></el-input>
+            <el-form-item label="折扣" prop="discount">
+                <el-input v-model="saloonSales.discount"></el-input>
             </el-form-item>
-
+            <el-form-item label="售后电话" prop="serviceHotline">
+                <el-input v-model="saloonSales.serviceHotline"></el-input>
+            </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="addCustomer('add')">提交</el-button>
+                <el-button type="primary" @click="addSaloonSales('add')">提交</el-button>
                 <el-button @click="dialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
 
     </el-dialog>
     <el-dialog
-            title="修改客户信息"
+            title="修改销售信息"
             :visible.sync="dialogVisible1"
             width="30%"
     >
 
-        <el-form ref="add" :model="customer" label-width="80px">
-            <el-form-item label="客户姓名" prop="name">
-                <el-input v-model="customer.name"></el-input>
+        <el-form ref="add" :model="saloonSales" label-width="80px">
+            <el-form-item label="轿车编号" prop="sno">
+                <el-input v-model="saloonSales.id"></el-input>
             </el-form-item>
 
-            <el-form-item label="客户电话" prop="phone">
-                <el-input v-model="customer.phone"></el-input>
+            <el-form-item label="客户编号" prop="cno">
+                <el-input v-model="saloonSales.sno"></el-input>
             </el-form-item>
 
-            <el-form-item label="地址" prop="address">
-                <el-input v-model="customer.address"></el-input>
+            <el-form-item label="员工编号" prop="eno">
+                <el-input v-model="saloonSales.eno"></el-input>
             </el-form-item>
 
-            <el-form-item label="联系记录" prop="record">
-                <el-input v-model="customer.record"></el-input>
+            <el-form-item label="折扣" prop="discount">
+                <el-input v-model="saloonSales.discount"></el-input>
             </el-form-item>
-
+            <el-form-item label="售后电话" prop="serviceHotline">
+                <el-input v-model="saloonSales.serviceHotline"></el-input>
+            </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="updateCustomer">提交</el-button>
+                <el-button type="primary" @click="updateSaloonSales">提交</el-button>
                 <el-button @click="dialogVisible1 = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -88,34 +92,45 @@
     <!--    表格-->
     <template>
         <el-table
+                highlight-current-row:true
                 :data="tableData"
                 style="width: 100%"
                 @current-change="handleCurrentChange1"
                 :row-class-name="tableRowClassName">
             <el-table-column
+                    prop="id"
+                    label="售货单号"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="sno"
+                    label="轿车编号"
+                    align="center">
+            </el-table-column>
+            <el-table-column
                     prop="cno"
                     label="客户编号"
-                    type="index"
                     align="center">
             </el-table-column>
             <el-table-column
-                    prop="name"
-                    label="客户姓名"
+                    prop="eno"
+                    label="员工编号"
                     align="center">
             </el-table-column>
             <el-table-column
-                    prop="phone"
-                    label="客户电话"
+                    prop="salesDate"
+                    label="销售日期"
+                    align="center"
+                    :formatter="formatter">
+            </el-table-column>
+            <el-table-column
+                    prop="discount"
+                    label="折扣"
                     align="center">
             </el-table-column>
             <el-table-column
-                    prop="address"
-                    label="地址"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="record"
-                    label="联系记录"
+                    prop="serviceHotline"
+                    label="售后电话"
                     align="center">
             </el-table-column>
             <el-table-column
@@ -146,25 +161,28 @@
 <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
 <script>
     new Vue({
-        el:"#app",
+        el: "#app",
 
-        mounted(){
+        mounted() {
             //页面加载完成发送异步请求
             this.select();
             this.identity = sessionStorage.getItem("identity");
+            console.log(this.identity);
         },
-        data(){
-            return{
+        data() {
+            return {
                 identity: '',
-                customer: {
+                saloonSales: {
+                    id: '',
+                    sno: '',
                     cno: '',
-                    name: '',
-                    phone: '',
-                    address: '',
-                    record: ''
+                    eno: '',
+                    salesData: '',
+                    discount: '',
+                    serviceHotline: ''
                 },
                 //每页显示的条数
-                pageSize:5,
+                pageSize: 5,
                 //总记录数
                 totalCount: 100,
                 //分页
@@ -174,33 +192,41 @@
 
                 dialogVisible1: false,
 
-                selectedId:0,
+                selectedId: 0,
 
                 //表格数据
                 tableData: [{
-                    cno: '1',
-                    name: '',
-                    phone: '',
-                    address: '',
-                    record: ''
+                    id: '1',
+                    sno: '',
+                    cno: '',
+                    eno: '',
+                    salesData: '',
+                    discount: '',
+                    serviceHotline: ''
                 },
                     {
-                        cno: '2',
-                        name: '',
-                        phone: '',
-                        address: '',
-                        record: ''
+                        id: '2',
+                        sno: '',
+                        cno: '',
+                        eno: '',
+                        salesData: '',
+                        discount: '',
+                        serviceHotline: ''
                     }]
             }
         },
-        methods:{
-            handleCurrentChange1(val){
+        methods: {
+            handleCurrentChange1(val) {
                 this.currentRow = val;
-                this.selectedId = this.currentRow.cno;
+                this.selectedId = this.currentRow.id;
             },
-            select(){
-                axios.get("http://localhost:8081/customer?current=" + this.currentPage + "&pageSize=" + this.pageSize,
-                    this.customer
+            //日期打印格式化
+            formatter(row, column) {
+                return row.salesDate.replace('T', ' ');
+            },
+            select() {
+                axios.get("http://localhost:8081/sales?current=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    this.saloonSales
                 ).then(resp => {
                     //设置表格数据
                     this.tableData = resp.data.data.list;
@@ -208,94 +234,94 @@
                     this.totalCount = resp.data.data.totalCount;
                 })
             },
-            addCustomer(formName){
-                if (this.identity === 'true'){
-                    axios.post("http://localhost:8081/customer",this.customer
-                    ).then(resp =>{
-                        if(resp.data.code === 0){
+            addSaloonSales(formName) {
+                if (this.identity === 'true') {
+                    axios.post("http://localhost:8081/sales", this.saloonSales
+                    ).then(resp => {
+                        if (resp.data.code === 0) {
                             this.$refs[formName].resetFields();
                             this.dialogVisible = false;
                             this.select();
                             this.$message({
-                                message:'添加成功',
-                                type:'success'
+                                message: '添加成功',
+                                type: 'success'
                             })
-                        }else {
+                        } else {
                             this.$message({
-                                message:'添加失败,请重新编辑',
-                                type:'warning'
+                                message: '添加失败,请重新编辑',
+                                type: 'warning'
                             })
                         }
                     })
-                }else{
+                } else {
                     this.$message({
-                        message:'对不起，您没有操作权限',
-                        type:'error'
+                        message: '对不起，您没有操作权限',
+                        type: 'error'
                     })
                 }
             },
-            update(){
-                if (this.identity === 'true'){
-                    this.$confirm('确定要修改这条数据吗','提示',{
+            update() {
+                if (this.identity === 'true') {
+                    this.$confirm('确定要修改这条数据吗', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
-                    }).then(()=>{
-                        axios.get("http://localhost:8081/customer/"+this.selectedId
+                    }).then(() => {
+                        axios.get("http://localhost:8081/sales/" + this.selectedId
                         ).then(resp => {
                             console.log(resp.data.data);
-                            this.customer = resp.data.data;
+                            this.saloonSales = resp.data.data;
                             this.dialogVisible1 = true;
                         })
                     })
-                }else{
+                } else {
                     this.$message({
-                        message:'对不起，您没有操作权限',
-                        type:'error'
+                        message: '对不起，您没有操作权限',
+                        type: 'error'
                     })
                 }
             },
-            updateCustomer(){
-                axios.put("http://localhost:8081/customer/",this.customer
-                ).then(resp =>{
-                    if(resp.data.code === 0){
+            updateSaloonSales() {
+                axios.put("http://localhost:8081/sales", this.saloonSales
+                ).then(resp => {
+                    if (resp.data.code === 0) {
                         this.dialogVisible1 = false;
                         this.select();
                         this.$message({
-                            message:'修改成功',
-                            type:'success'
+                            message: '修改成功',
+                            type: 'success'
                         })
-                    }else {
+                    } else {
                         this.$message({
-                            message:'修改失败,请重新编辑',
-                            type:'warning'
+                            message: '修改失败,请重新编辑',
+                            type: 'warning'
                         })
                     }
                 })
             },
-            deleteById(){
-                if (this.identity === 'true'){
-                    this.$confirm('此操作将永久删除数据','提示',{
+            deleteById() {
+                if (this.identity === 'true') {
+                    this.$confirm('此操作将永久删除数据', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
-                    }).then(()=>{
-                        axios.delete("http://localhost:8081/customer/"+this.selectedId
+                    }).then(() => {
+                        axios.delete("http://localhost:8081/saloon/" + this.selectedId
                         ).then(resp => {
-                            if (resp.data.code === 0){
+                            if (resp.data.code === 0) {
                                 this.currentPage = 1;
                                 this.select();
                                 this.$message({
-                                    message:'删除成功',
-                                    type:'success'
+                                    message: '删除成功',
+                                    type: 'success'
                                 })
                             }
                         })
                     })
-                }else{
+                } else {
                     this.$message({
-                        message:'对不起，您没有操作权限',
-                        type:'error'
+                        message: '对不起，您没有操作权限',
+                        type: 'error'
                     })
                 }
             },

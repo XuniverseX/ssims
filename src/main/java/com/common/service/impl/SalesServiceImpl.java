@@ -34,7 +34,7 @@ public class SalesServiceImpl extends ServiceImpl<SalesMapper, Sales> implements
     private IEmployeeService employeeService;
 
     @Override
-    public Result<PageDTO<SalesDTO>> getAll(Integer current, Integer pageSize, PreSelectDTO preSelectDTO) {
+    public Result<PageDTO<SalesDTO>> getDisplayData(Integer current, Integer pageSize, PreSelectDTO preSelectDTO) {
         Page<Sales> page = query()
                 .page(new Page<>(current, pageSize));
 
@@ -72,6 +72,16 @@ public class SalesServiceImpl extends ServiceImpl<SalesMapper, Sales> implements
 
         PageDTO<SalesDTO> pageDTO = new PageDTO<>();
         pageDTO.setList(result);
+        pageDTO.setPages(page.getPages());
+        pageDTO.setTotalCount(page.getTotal());
+        return Result.success(pageDTO);
+    }
+
+    @Override
+    public Result<PageDTO<Sales>> getAll(Integer current, Integer pageSize) {
+        Page<Sales> page = query().page(new Page<>(current, pageSize));
+        PageDTO<Sales> pageDTO = new PageDTO<>();
+        pageDTO.setList(page.getRecords());
         pageDTO.setPages(page.getPages());
         pageDTO.setTotalCount(page.getTotal());
         return Result.success(pageDTO);
