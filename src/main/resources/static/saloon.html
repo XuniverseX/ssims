@@ -88,6 +88,7 @@
     <!--    表格-->
     <template>
         <el-table
+                highlight-current-row:true
                 :data="tableData"
                 style="width: 100%"
                 @current-change="handleCurrentChange1"
@@ -95,7 +96,6 @@
             <el-table-column
                     prop="sno"
                     label="轿车编号"
-                    type="index"
                     align="center">
             </el-table-column>
             <el-table-column
@@ -239,13 +239,16 @@
                 this.$refs[formName].resetFields();
             },
             update(){
-                this.dialogVisible1 =true;
-                axios.get("https://localhost:8081/saloon/"+this.selectedId
-                ).then(resp => {
-                    this.$refs['update'].model = resp.data.saloon.model;
-                    this.$refs['update'].color = resp.data.saloon.color;
-                    this.$refs['update'].manufacturer = resp.data.saloon.manufacturer;
-                    this.$refs['update'].price = resp.data.saloon.price;
+                this.$confirm('确定要修改这条数据吗','提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(()=>{
+                    axios.get("https://localhost:8081/saloon/"+this.selectedId
+                    ).then(resp => {
+                        this.saloon = resp.data.data.saloon;
+                        this.dialogVisible1 =true;
+                    })
                 })
             },
             updateSaloon(){
