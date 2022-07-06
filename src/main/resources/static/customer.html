@@ -210,6 +210,7 @@
                 axios.post("http://localhost:8081/customer",this.customer
                 ).then(resp =>{
                     if(resp.data.code === 0){
+                        this.$refs[formName].resetFields();
                         this.dialogVisible = false;
                         this.select();
                         this.$message({
@@ -223,16 +224,19 @@
                         })
                     }
                 })
-                this.$refs[formName].resetFields();
             },
             update(){
-                this.dialogVisible1 =true;
-                axios.get("https://localhost:8081/customer/"+this.selectedId
-                ).then(resp => {
-                    this.$refs['update'].name = resp.data.saloon.name;
-                    this.$refs['update'].phone = resp.data.saloon.phone;
-                    this.$refs['update'].address = resp.data.saloon.address;
-                    this.$refs['update'].record = resp.data.saloon.record;
+                this.$confirm('确定要修改这条数据吗','提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(()=>{
+                    axios.get("http://localhost:8081/customer/"+this.selectedId
+                    ).then(resp => {
+                        console.log(resp.data.data);
+                        this.customer = resp.data.data;
+                        this.dialogVisible1 = true;
+                    })
                 })
             },
             updateCustomer(){
@@ -262,6 +266,7 @@
                     axios.delete("http://localhost:8081/customer/"+this.selectedId
                     ).then(resp => {
                         if (resp.data.code === 0){
+                            this.currentPage = 1;
                             this.select();
                             this.$message({
                                 message:'删除成功',
