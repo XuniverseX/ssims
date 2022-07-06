@@ -210,7 +210,7 @@
                 return row.createDate.replace('T',' ');
             },
             select(){
-                axios.get("http://localhost:8081/saloon/data?current=" + this.currentPage + "&pageSize=" + this.pageSize,
+                axios.get("http://localhost:8081/saloon?current=" + this.currentPage + "&pageSize=" + this.pageSize,
                     this.saloon
                 ).then(resp => {
                     //设置表格数据

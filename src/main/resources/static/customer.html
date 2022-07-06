@@ -197,7 +197,7 @@
                 this.selectedId = this.currentRow.cno;
             },
             select(){
-                axios.get("http://localhost:8081/customer/data?current=" + this.currentPage + "&pageSize=" + this.pageSize,
+                axios.get("http://localhost:8081/customer?current=" + this.currentPage + "&pageSize=" + this.pageSize,
                     this.customer
                 ).then(resp => {
                     //设置表格数据
