@@ -65,7 +65,7 @@ public class SalesServiceImpl extends ServiceImpl<SalesMapper, Sales> implements
             temp.setCustomerName(customer.getName());
             temp.setEmployeeName(employee.getName());
             temp.setCustomerPhone(customer.getPhone());
-            temp.setSaloonPrice(saloon.getPrice() * sales.getDiscount());
+            temp.setSaloonPrice(Math.ceil(saloon.getPrice() * sales.getDiscount()));
 
             result.add(temp);
         });
