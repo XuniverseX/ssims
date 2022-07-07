@@ -18,9 +18,8 @@
     <h1 align="center" >员工信息</h1>
     <hr color="blue">
     <el-row>
-
-        <el-button type="primary" plain @click="dialogVisible = true">新增</el-button>
-
+        <el-button @click.native="back">返回</el-button>
+        <el-button type="primary" @click.native="addEmployee">新增</el-button>
     </el-row>
     <!--添加数据对话框表单-->
     <el-dialog
@@ -28,7 +27,6 @@
             :visible.sync="dialogVisible"
             width="30%"
     >
-
         <el-form ref="add" :model="employee" label-width="80px">
             <el-form-item label="姓名" prop="name">
                 <el-input v-model="employee.name"></el-input>
@@ -52,7 +50,7 @@
             <el-form-item label="工作" prop="job">
                 <el-input v-model="employee.job"></el-input> <el-form-item>
             </el-form-item>
-                <el-button type="primary" @click="addEmployee('add')">提交</el-button>
+                <el-button type="primary" @click="submitEmployee('add')">提交</el-button>
                 <el-button @click="dialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -63,7 +61,6 @@
             :visible.sync="dialogVisible1"
             width="30%"
     >
-
         <el-form ref="add" :model="employee" label-width="80px">
             <el-form-item label="姓名" prop="name">
                 <el-input v-model="employee.name"></el-input>
@@ -218,6 +215,19 @@
             }
         },
         methods:{
+            back(){
+                window.location.href = "index.html";
+            },
+            addEmployee(){
+                if (this.identity === 'true'){
+                    this.dialogVisible = true;
+                }else{
+                    this.$message({
+                        message:'对不起，您没有操作权限',
+                        type:'error'
+                    })
+                }
+            },
             handleCurrentChange1(val){
                 this.currentRow = val;
                 this.selectedId = this.currentRow.eno;
@@ -232,8 +242,7 @@
                     this.totalCount = resp.data.data.totalCount;
                 })
             },
-            addEmployee(formName){
-                if (this.identity === 'true'){
+            submitEmployee(formName){
                     axios.post("http://localhost:8081/employee",this.employee
                     ).then(resp =>{
                         if(resp.data.code === 0){
@@ -251,12 +260,6 @@
                             })
                         }
                     })
-                }else{
-                    this.$message({
-                        message:'对不起，您没有操作权限',
-                        type:'error'
-                    })
-                }
             },
             update(){
                 if (this.identity === 'true'){

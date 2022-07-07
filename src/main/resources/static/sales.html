@@ -18,8 +18,11 @@
 <div id="app">
     <h1 align="center" >销售报表</h1>
     <hr color="blue">
-<!--    搜索表单-->
+    <!--    搜索表单-->
     <el-form :inline="true" :model="sales" class="demo-form-inline">
+        <el-form-item>
+            <el-button @click.native="back">返回</el-button>
+        </el-form-item>
         <el-form-item label="轿车型号">
             <el-input v-model="sales.saloonModel" placeholder="轿车型号"></el-input>
         </el-form-item>
@@ -104,6 +107,9 @@
         },
 
         methods: {
+            back(){
+              window.location.href = "index.html";
+            },
             //日期打印格式化
             formatter(row,column){
                 return row.salesDate.replace('T',' ');

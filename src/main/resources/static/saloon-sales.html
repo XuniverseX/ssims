@@ -15,16 +15,15 @@
 </head>
 <body>
 <div id="app">
-    <h1 align="center">销售信息</h1>
+    <h1 align="center">订单信息</h1>
     <hr color="blue">
     <el-row>
-
-        <el-button type="primary" plain @click="dialogVisible = true">新增</el-button>
-
+        <el-button @click.native="back">返回</el-button>
+        <el-button type="primary" @click.native="addSaloonSales">新增</el-button>
     </el-row>
     <!--添加数据对话框表单-->
     <el-dialog
-            title="添加销售信息"
+            title="添加订单信息"
             :visible.sync="dialogVisible"
             width="30%"
     >
@@ -50,14 +49,14 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="addSaloonSales('add')">提交</el-button>
+                <el-button type="primary" @click="submitSaloonSales('add')">提交</el-button>
                 <el-button @click="dialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
 
     </el-dialog>
     <el-dialog
-            title="修改销售信息"
+            title="修改订单信息"
             :visible.sync="dialogVisible1"
             width="30%"
     >
@@ -216,6 +215,9 @@
             }
         },
         methods: {
+            back(){
+                window.location.href = "index.html";
+            },
             handleCurrentChange1(val) {
                 this.currentRow = val;
                 this.selectedId = this.currentRow.id;
@@ -234,8 +236,17 @@
                     this.totalCount = resp.data.data.totalCount;
                 })
             },
-            addSaloonSales(formName) {
+            addSaloonSales(){
                 if (this.identity === 'true') {
+                    this.dialogVisible = true;
+                } else {
+                    this.$message({
+                        message: '对不起，您没有操作权限',
+                        type: 'error'
+                    })
+                }
+            },
+            submitSaloonSales(formName) {
                     axios.post("http://localhost:8081/sales", this.saloonSales
                     ).then(resp => {
                         if (resp.data.code === 0) {
@@ -253,12 +264,6 @@
                             })
                         }
                     })
-                } else {
-                    this.$message({
-                        message: '对不起，您没有操作权限',
-                        type: 'error'
-                    })
-                }
             },
             update() {
                 if (this.identity === 'true') {

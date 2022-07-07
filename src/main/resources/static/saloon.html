@@ -18,9 +18,8 @@
     <h1 align="center" >轿车信息</h1>
     <hr color="blue">
     <el-row>
-
-        <el-button type="primary" plain @click="dialogVisible = true">新增</el-button>
-
+        <el-button @click.native="back">返回</el-button>
+        <el-button type="primary" @click.native="addSaloon">新增</el-button>
     </el-row>
     <!--添加数据对话框表单-->
     <el-dialog
@@ -48,7 +47,7 @@
 
 
             <el-form-item>
-                <el-button type="primary" @click="addSaloon('add')">提交</el-button>
+                <el-button type="primary" @click="submitSaloon('add')">提交</el-button>
                 <el-button @click="dialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -203,6 +202,9 @@
             }
         },
         methods:{
+            back(){
+              window.location.href = "index.html";
+            },
             handleCurrentChange1(val){
                 this.currentRow = val;
                 this.selectedId = this.currentRow.sno;
@@ -221,8 +223,17 @@
                     this.totalCount = resp.data.data.totalCount;
                 })
             },
-            addSaloon(formName){
+            addSaloon(){
                 if (this.identity === 'true'){
+                    this.dialogVisible = true;
+                }else{
+                    this.$message({
+                        message:'对不起，您没有操作权限',
+                        type:'error'
+                    })
+                }
+            },
+            submitSaloon(formName){
                     axios.post("http://localhost:8081/saloon",this.saloon
                     ).then(resp =>{
                     if(resp.data.code === 0){
@@ -240,12 +251,6 @@
                         })
                     }
                     })
-                }else{
-                    this.$message({
-                        message:'对不起，您没有操作权限',
-                        type:'error'
-                    })
-                }
             },
             update(){
                 if (this.identity === 'true'){

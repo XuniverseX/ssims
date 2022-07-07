@@ -15,12 +15,11 @@
 </head>
 <body>
 <div id="app">
-    <h1 align="center" >客户信息</h1>
+    <h1 align="center">客户信息</h1>
     <hr color="blue">
     <el-row>
-
-        <el-button type="primary" plain @click="dialogVisible = true">新增</el-button>
-
+        <el-button @click.native="back">返回</el-button>
+        <el-button type="primary"  @click.native="addCustomer">新增</el-button>
     </el-row>
     <!--添加数据对话框表单-->
     <el-dialog
@@ -28,7 +27,6 @@
             :visible.sync="dialogVisible"
             width="30%"
     >
-
         <el-form ref="add" :model="customer" label-width="80px">
             <el-form-item label="客户姓名" prop="name">
                 <el-input v-model="customer.name"></el-input>
@@ -48,7 +46,7 @@
 
 
             <el-form-item>
-                <el-button type="primary" @click="addCustomer('add')">提交</el-button>
+                <el-button type="primary" @click="submitCustomer('add')">提交</el-button>
                 <el-button @click="dialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -146,15 +144,15 @@
 <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
 <script>
     new Vue({
-        el:"#app",
+        el: "#app",
 
-        mounted(){
+        mounted() {
             //页面加载完成发送异步请求
             this.select();
             this.identity = sessionStorage.getItem("identity");
         },
-        data(){
-            return{
+        data() {
+            return {
                 identity: '',
                 customer: {
                     cno: '',
@@ -164,7 +162,7 @@
                     record: ''
                 },
                 //每页显示的条数
-                pageSize:5,
+                pageSize: 5,
                 //总记录数
                 totalCount: 100,
                 //分页
@@ -174,18 +172,18 @@
 
                 dialogVisible1: false,
 
-                selectedId:0,
+                selectedId: 0,
 
                 //表格数据
                 tableData: [{
-                    cno: '1',
+                    cno: '',
                     name: '',
                     phone: '',
                     address: '',
                     record: ''
                 },
                     {
-                        cno: '2',
+                        cno: '',
                         name: '',
                         phone: '',
                         address: '',
@@ -193,12 +191,25 @@
                     }]
             }
         },
-        methods:{
-            handleCurrentChange1(val){
+        methods: {
+            back(){
+                window.location.href = "index.html";
+            },
+            addCustomer() {
+                if (this.identity === 'true') {
+                    this.dialogVisible = true;
+                } else {
+                    this.$message({
+                        message: '对不起，您没有操作权限',
+                        type: 'error'
+                    })
+                }
+            },
+            handleCurrentChange1(val) {
                 this.currentRow = val;
                 this.selectedId = this.currentRow.cno;
             },
-            select(){
+            select() {
                 axios.get("http://localhost:8081/customer?current=" + this.currentPage + "&pageSize=" + this.pageSize,
                     this.customer
                 ).then(resp => {
@@ -208,94 +219,86 @@
                     this.totalCount = resp.data.data.totalCount;
                 })
             },
-            addCustomer(formName){
-                if (this.identity === 'true'){
-                    axios.post("http://localhost:8081/customer",this.customer
-                    ).then(resp =>{
-                        if(resp.data.code === 0){
-                            this.$refs[formName].resetFields();
-                            this.dialogVisible = false;
-                            this.select();
-                            this.$message({
-                                message:'添加成功',
-                                type:'success'
-                            })
-                        }else {
-                            this.$message({
-                                message:'添加失败,请重新编辑',
-                                type:'warning'
-                            })
-                        }
-                    })
-                }else{
-                    this.$message({
-                        message:'对不起，您没有操作权限',
-                        type:'error'
-                    })
-                }
-            },
-            update(){
-                if (this.identity === 'true'){
-                    this.$confirm('确定要修改这条数据吗','提示',{
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(()=>{
-                        axios.get("http://localhost:8081/customer/"+this.selectedId
-                        ).then(resp => {
-                            console.log(resp.data.data);
-                            this.customer = resp.data.data;
-                            this.dialogVisible1 = true;
-                        })
-                    })
-                }else{
-                    this.$message({
-                        message:'对不起，您没有操作权限',
-                        type:'error'
-                    })
-                }
-            },
-            updateCustomer(){
-                axios.put("http://localhost:8081/customer/",this.customer
-                ).then(resp =>{
-                    if(resp.data.code === 0){
-                        this.dialogVisible1 = false;
+            submitCustomer(formName) {
+                axios.post("http://localhost:8081/customer", this.customer
+                ).then(resp => {
+                    if (resp.data.code === 0) {
+                        this.$refs[formName].resetFields();
+                        this.dialogVisible = false;
                         this.select();
                         this.$message({
-                            message:'修改成功',
-                            type:'success'
+                            message: '添加成功',
+                            type: 'success'
                         })
-                    }else {
+                    } else {
                         this.$message({
-                            message:'修改失败,请重新编辑',
-                            type:'warning'
+                            message: '添加失败,请重新编辑',
+                            type: 'warning'
                         })
                     }
                 })
             },
-            deleteById(){
-                if (this.identity === 'true'){
-                    this.$confirm('此操作将永久删除数据','提示',{
+            update() {
+                if (this.identity === 'true') {
+                    this.$confirm('确定要修改这条数据吗', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
-                    }).then(()=>{
-                        axios.delete("http://localhost:8081/customer/"+this.selectedId
+                    }).then(() => {
+                        axios.get("http://localhost:8081/customer/" + this.selectedId
                         ).then(resp => {
-                            if (resp.data.code === 0){
+                            this.customer = resp.data.data;
+                            this.dialogVisible1 = true;
+                        })
+                    })
+                } else {
+                    this.$message({
+                        message: '对不起，您没有操作权限',
+                        type: 'error'
+                    })
+                }
+            },
+            updateCustomer() {
+                axios.put("http://localhost:8081/customer/", this.customer
+                ).then(resp => {
+                    if (resp.data.code === 0) {
+                        this.dialogVisible1 = false;
+                        this.select();
+                        this.$message({
+                            message: '修改成功',
+                            type: 'success'
+                        })
+                    } else {
+                        this.$message({
+                            message: '修改失败,请重新编辑',
+                            type: 'warning'
+                        })
+                    }
+                })
+            },
+            deleteById() {
+                if (this.identity === 'true') {
+                    this.$confirm('此操作将永久删除数据', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        axios.delete("http://localhost:8081/customer/" + this.selectedId
+                        ).then(resp => {
+                            if (resp.data.code === 0) {
                                 this.currentPage = 1;
                                 this.select();
                                 this.$message({
-                                    message:'删除成功',
-                                    type:'success'
+                                    message: '删除成功',
+                                    type: 'success'
                                 })
                             }
                         })
                     })
-                }else{
+                } else {
                     this.$message({
-                        message:'对不起，您没有操作权限',
-                        type:'error'
+                        message: '对不起，您没有操作权限',
+                        type: 'error'
                     })
                 }
             },
