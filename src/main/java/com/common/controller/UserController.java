@@ -4,9 +4,11 @@ import com.common.dto.PageDTO;
 import com.common.dto.Result;
 import com.common.entity.User;
 import com.common.service.IUserService;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")
@@ -16,8 +18,14 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping("/login")
-    public Result<User> login(@RequestParam String username, @RequestParam String password) {
-        return userService.login(username, password);
+    public Result<User> login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
+        return userService.login(request.getSession(), username, password);
+    }
+
+    @PostMapping("/logout")
+    public Result<Object> logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("identity");
+        return Result.success();
     }
 
     @PostMapping("/register")

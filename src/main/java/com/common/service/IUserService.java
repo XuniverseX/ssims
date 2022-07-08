@@ -5,8 +5,10 @@ import com.common.dto.PageDTO;
 import com.common.dto.Result;
 import com.common.entity.User;
 
+import javax.servlet.http.HttpSession;
+
 public interface IUserService extends IService<User> {
-    Result<User> login(String username, String password);
+    Result<User> login(HttpSession session, String username, String password);
 
     Result<User> register(String username, String password);
 

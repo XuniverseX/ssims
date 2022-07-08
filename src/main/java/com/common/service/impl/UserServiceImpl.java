@@ -9,14 +9,17 @@ import com.common.mapper.UserMapper;
 import com.common.service.IUserService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     @Override
-    public Result<User> login(String username, String password) {
+    public Result<User> login(HttpSession session, String username, String password) {
         User user = query().eq("username", username).eq("password", password).one();
         if (user == null) {
             return Result.fail("没有此用户，请重新登录");
         }
+        session.setAttribute("identity", user.getIsAuth());
         return Result.success(user);
     }
 

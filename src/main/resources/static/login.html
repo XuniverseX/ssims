@@ -67,7 +67,7 @@
                                     message: '登录成功',
                                     type: 'success'
                                 });
-                                window.location.href = "index.html";
+                                window.location.href = "http://localhost:8081/index.html";
                             } else {
                                 this.$message({
                                     message: resp.data.message,
@@ -92,7 +92,7 @@
                 }
             },
             register(){
-                window.location.href = "register.html";
+                window.location.href = "http://localhost:8081/register.html";
             }
         }
     })
