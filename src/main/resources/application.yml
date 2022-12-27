@@ -11,7 +11,7 @@ spring:
   mvc:
     static-path-pattern: /*
 mybatis-plus:
-  type-aliases-package: com.common.entity
+  type-aliases-package: com.xuni.entity
 logging:
   level:
     com.common: debug
