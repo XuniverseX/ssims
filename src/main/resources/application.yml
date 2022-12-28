@@ -12,6 +12,9 @@ spring:
     static-path-pattern: /*
 mybatis-plus:
   type-aliases-package: com.xuni.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:com/xuni/mapper/*.xml
 logging:
   level:
     com.common: debug

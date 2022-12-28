@@ -4,15 +4,16 @@ import com.xuni.dto.PageDTO;
 import com.xuni.dto.Result;
 import com.xuni.entity.Customer;
 import com.xuni.service.ICustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
 
-    @Autowired
+    @Resource
     private ICustomerService customerService;
 
     @GetMapping
