@@ -1,2 +1,2 @@
-# SQLCourseDesign
+# ssims
 Saloon Management System
