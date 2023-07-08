@@ -4,6 +4,8 @@ import com.xuni.dto.PageDTO;
 import com.xuni.dto.Result;
 import com.xuni.entity.User;
 import com.xuni.service.IUserService;
+import com.xuni.utils.RSA;
+import com.xuni.utils.SignMD5;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -13,11 +15,22 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/user")
 public class UserController {
 
+    private final String SALT = "xuni";
     @Resource
     private IUserService userService;
 
     @GetMapping("/login")
-    public Result<User> login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
+    public Result<User> login(HttpServletRequest request,
+                              @RequestParam("username") String username,
+                              @RequestParam("password") String passwdStr) {
+        passwdStr = passwdStr.replaceAll(" ", "+");
+        passwdStr = RSA.priDecode(passwdStr);
+        String time = passwdStr.substring(passwdStr.length() - 13);
+        if (System.currentTimeMillis() - Long.parseLong(time) > 1 * 60 * 1000) {
+            return Result.fail("登录异常，时间超时");
+        }
+
+        String password = passwdStr.substring(0, passwdStr.length() - 13);
         return userService.login(request.getSession(), username, password);
     }
 
@@ -30,6 +43,19 @@ public class UserController {
     @PostMapping("/register")
     public Result<User> register(@RequestParam String username, @RequestParam String password) {
         return userService.register(username, password);
+    }
+
+    @PostMapping("/recharge")
+    public Result<Object> recharge(@RequestParam String username,
+                                   @RequestParam Float money,
+                                   @RequestParam String sign) {
+        String str = "username=" + username + "&money=" + money.intValue() + "&salt=" + SALT;
+        System.out.println(str);
+        String md5 = SignMD5.getMD5(str);
+        if (!md5.equals(sign)) {
+            return Result.fail("接口被篡改");
+        }
+        return userService.recharge(username, money);
     }
 
     @GetMapping

@@ -45,4 +45,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         pageDTO.setTotalCount(page.getTotal());
         return Result.success(pageDTO);
     }
+
+    @Override
+    public Result<Object> recharge(String username, Float money) {
+        User user = query().eq("username", username).one();
+        user.setMoney(user.getMoney() + money);
+        boolean success = updateById(user);
+        if (!success) {
+            return Result.fail("充值失败");
+        }
+        return Result.success("充值成功");
+    }
 }

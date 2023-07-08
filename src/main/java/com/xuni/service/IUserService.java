@@ -13,4 +13,6 @@ public interface IUserService extends IService<User> {
     Result<User> register(String username, String password);
 
     Result<PageDTO<User>> getAll(Integer current, Integer pageSize);
+
+    Result<Object> recharge(String username, Float money);
 }
